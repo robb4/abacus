@@ -158,4 +158,7 @@ export default {
   configuration_theme: 'Customization',
   configuration_theme_selection: 'Change color theme',
   configuration_theme_title: 'Color themes',
+
+  transaction_search_placeholder: 'Search transactions...',
+  transaction_type_label: 'Type',
 };
