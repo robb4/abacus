@@ -60,7 +60,9 @@ export default function CredentialsScreen({ navigation, route }: ScreenType) {
   const bioAuthCheck = useCallback((c: TCredential[]) => {
     (async () => {
       if (useBiometricAuth && !authenticated) {
-        const bioAuth = await LocalAuthentication.authenticateAsync();
+        const bioAuth = await LocalAuthentication.authenticateAsync({
+          promptMessage: translate('authenticate_label'),
+        });
         if (bioAuth.success !== true) {
           return;
         }
@@ -171,7 +173,7 @@ export default function CredentialsScreen({ navigation, route }: ScreenType) {
               }}
               onPress={() => setEditMode(!editMode)}
             >
-              <AText fontSize={16}>{editMode ? 'Done' : 'Edit'}</AText>
+              <AText fontSize={16}>{editMode ? translate('credentials_done_button') : translate('credentials_edit_button')}</AText>
             </Pressable>
           ) : <AView style={{ width: 100 }} />}
         </AStackFlex>
