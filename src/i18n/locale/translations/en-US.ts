@@ -165,4 +165,7 @@ export default {
   filters_screen_title: 'Filters',
   credentials_done_button: 'Done',
   credentials_edit_button: 'Edit',
+
+  // from X.X.X
+  configuration_autocomplete_transaction: 'Autocomplete transaction information when selecting a previous description', // TODO: explain better
 };

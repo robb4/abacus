@@ -33,6 +33,7 @@ import {
 export default function ConfigurationScreen({ navigation }: ScreenType) {
   const { colors } = useThemeColors();
   const closeTransactionScreen = useSelector((state: RootState) => state.configuration.closeTransactionScreen);
+  const autocompleteAccounts = useSelector((state: RootState) => state.configuration.autocompleteTransaction);
   const safeAreaInsets = useSafeAreaInsets();
   const backendURL = useSelector((state: RootState) => state.configuration.backendURL);
   const useBiometricAuth = useSelector((state: RootState) => state.configuration.useBiometricAuth);
@@ -106,8 +107,13 @@ export default function ConfigurationScreen({ navigation }: ScreenType) {
     );
   };
 
-  const handleCheckBoxChange = async (bool: boolean) => {
+  const handleCloseFormCheckBoxChange = async (bool: boolean) => {
     dispatch.configuration.setCloseTransactionScreen(bool);
+    return Promise.resolve();
+  };
+
+  const handleAutocompleteAccountsCheckBoxChange = async (bool: boolean) => {
+    dispatch.configuration.setAutocompleteTransaction(bool);
     return Promise.resolve();
   };
 
@@ -305,7 +311,28 @@ export default function ConfigurationScreen({ navigation }: ScreenType) {
           }}
         >
           <AText fontSize={14}>{translate('close_after_transaction')}</AText>
-          <Switch thumbColor="white" trackColor={{ false: '#767577', true: selectedBrandStyle }} onValueChange={handleCheckBoxChange} value={closeTransactionScreen} />
+          <Switch thumbColor="white" trackColor={{ false: '#767577', true: selectedBrandStyle }} onValueChange={handleCloseFormCheckBoxChange} value={closeTransactionScreen} />
+        </AStack>
+      </AView>
+      <AView
+        style={{
+          borderTopWidth: 0.5,
+          borderBottomWidth: 0.5,
+          borderColor: colors.listBorderColor,
+          backgroundColor: colors.tileBackgroundColor,
+        }}
+      >
+        <AStack
+          row
+          justifyContent="space-between"
+          style={{
+            paddingHorizontal: 10,
+            paddingVertical: 5,
+            marginLeft: 10,
+          }}
+        >
+          <AText fontSize={14} maxWidth="80%">{translate('configuration_autocomplete_transaction')}</AText>
+          <Switch thumbColor="white" trackColor={{ false: '#767577', true: selectedBrandStyle }} onValueChange={handleAutocompleteAccountsCheckBoxChange} value={autocompleteAccounts} />
         </AStack>
       </AView>
 

@@ -354,8 +354,17 @@ export default createModel<RootModel>()({
 
       return response;
     },
+
     async deleteTransaction(id): Promise<AxiosResponse> {
       return dispatch.configuration.apiDelete({ url: `/api/v1/transactions/${id}` });
+    },
+
+    async getTransaction(id): Promise<TransactionType> {
+      const { data: transaction } = await dispatch.configuration.apiFetch({ url: `/api/v1/transactions/${id}` }) as {
+        data: TransactionType,
+      };
+
+      return transaction;
     },
   }),
 });

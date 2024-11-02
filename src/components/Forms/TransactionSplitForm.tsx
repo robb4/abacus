@@ -32,6 +32,7 @@ export default function TransactionSplitForm({
 }) {
   const [locale] = getLocales();
   const displayForeignCurrency = useSelector((state: RootState) => state.configuration.displayForeignCurrency);
+  const autocompleteTransaction = useSelector((state: RootState) => state.configuration.autocompleteTransaction);
   const dispatch = useDispatch<RootDispatch>();
   const { colorScheme, colors } = useThemeColors();
   const [formData, setData] = useState<TransactionSplitType>({
@@ -70,6 +71,32 @@ export default function TransactionSplitForm({
       };
       dispatch.transactions.setTransactionSplitByIndex(index, newSplit);
       return newSplit;
+    });
+  };
+
+  const handleAutocompleteDescription = async (autocomplete) => {
+    let updates: Partial<TransactionSplitType> = {
+      description: autocomplete.name,
+    };
+
+    if (autocompleteTransaction) {
+      const existingTransaction = await dispatch.transactions.getTransaction(autocomplete.transactionGroupId);
+      updates = {
+        ...updates,
+        sourceId: existingTransaction.attributes.transactions[0].sourceId,
+        sourceName: existingTransaction.attributes.transactions[0].sourceName,
+        currencyCode: existingTransaction.attributes.transactions[0].currencyCode,
+        currencySymbol: existingTransaction.attributes.transactions[0].currencySymbol,
+        destinationId: existingTransaction.attributes.transactions[0].destinationId,
+        destinationName: existingTransaction.attributes.transactions[0].destinationName,
+        categoryId: existingTransaction.attributes.transactions[0].categoryId,
+        categoryName: existingTransaction.attributes.transactions[0].categoryName,
+      };
+    }
+
+    setTransaction({
+      ...formData,
+      ...updates,
     });
   };
 
@@ -298,10 +325,7 @@ export default function TransactionSplitForm({
             description: value,
           });
         }}
-        onSelectAutocomplete={(autocomplete) => setTransaction({
-          ...formData,
-          description: autocomplete.name,
-        })}
+        onSelectAutocomplete={handleAutocompleteDescription}
         InputRightElement={deleteBtn(['description'])}
         routeApi="transactions"
       />

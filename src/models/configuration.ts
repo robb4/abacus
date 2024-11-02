@@ -14,6 +14,7 @@ type ConfigurationStateType = {
   apiVersion: string
   serverVersion: string
   closeTransactionScreen: boolean
+  autocompleteTransaction: boolean
   selectedTheme: string
   selectedBrandStyle: string
 }
@@ -52,6 +53,7 @@ const INITIAL_STATE = {
   apiVersion: '',
   serverVersion: '',
   closeTransactionScreen: false,
+  autocompleteTransaction: false,
   selectedTheme: 'gradientOrange',
   selectedBrandStyle: colors.brandStyleOrange,
 } as ConfigurationStateType;
@@ -112,6 +114,12 @@ export default createModel<RootModel>()({
       return {
         ...state,
         closeTransactionScreen,
+      };
+    },
+    setAutocompleteTransaction(state, autocompleteTransaction: boolean): ConfigurationStateType {
+      return {
+        ...state,
+        autocompleteTransaction,
       };
     },
     setSelectedTheme(state, selectedTheme: string): ConfigurationStateType {
